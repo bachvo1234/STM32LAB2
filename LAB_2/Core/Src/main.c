@@ -212,11 +212,23 @@ int main(void)
 			  display7SEG(1);
 			  break;
 		  case 2:
-		  	  --status;
+		  	  ++status;
 		  	  HAL_GPIO_WritePin(GPIOA, EN0, 1);
 		  	  HAL_GPIO_WritePin(GPIOA, EN1, 0);
 		  	  display7SEG(2);
-		  			  break;
+		  	  break;
+		  case 3:
+			  ++status;
+			  HAL_GPIO_WritePin(GPIOA, EN0, 0);
+			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
+			  display7SEG(3);
+			  break;
+		  case 4:
+		  	  status = 1;
+		  	  HAL_GPIO_WritePin(GPIOA, EN0, 1);
+		  	  HAL_GPIO_WritePin(GPIOA, EN1, 0);
+		  	  display7SEG(0);
+		  	  break;
 		  }
 	  }
     /* USER CODE END WHILE */
