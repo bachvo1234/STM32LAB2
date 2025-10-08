@@ -154,6 +154,35 @@ void display7SEG(int num){
 
 	}
 }
+const int MAX_LED = 4;
+int index_led = 0;
+int led_buffer[4] = {1, 2, 3, 4};
+void update7SEG(int index){
+    switch (index){
+        case 0:
+        	HAL_GPIO_WritePin(GPIOA, EN1| EN2| EN3, 1);
+            HAL_GPIO_WritePin(GPIOA, EN0, 0);
+            display7SEG(led_buffer[0]);
+            break;
+        case 1:
+        	HAL_GPIO_WritePin(GPIOA, EN0| EN2| EN3, 1);
+        	HAL_GPIO_WritePin(GPIOA, EN1, 0);
+			display7SEG(led_buffer[1]);
+            break;
+        case 2:
+        	HAL_GPIO_WritePin(GPIOA, EN0| EN1| EN3, 1);
+        	HAL_GPIO_WritePin(GPIOA, EN2, 0);
+			display7SEG(led_buffer[2]);
+            break;
+        case 3:
+        	HAL_GPIO_WritePin(GPIOA, EN0| EN1| EN2, 1);
+        	HAL_GPIO_WritePin(GPIOA, EN3, 0);
+			display7SEG(led_buffer[3]);
+            break;
+        default:
+            break;
+    }
+}
 /**
   * @brief  The application entry point.
   * @retval int
@@ -192,7 +221,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer1(100, 0);
   setTimer1(50, 1);
-  int status = 1;
   while (1)
   {
 
@@ -201,43 +229,13 @@ int main(void)
 		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
 		  HAL_GPIO_TogglePin(GPIOA, DOT);
 	  }
-	  if(isTimerExpried(1) == 1){
-		  setTimer1(50, 1);
-		  switch(status){
-		  case 1:
-			  ++status;
-			  HAL_GPIO_WritePin(GPIOA, EN0, 0);
-			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
-			  display7SEG(1);
-			  break;
-		  case 2:
-			  ++status;
-			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN1, 0);
-			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
-			  display7SEG(2);
-			  break;
-		  case 3:
-			  ++status;
-			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN2, 0);
-			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
-			  display7SEG(3);
-			  break;
-		  case 4:
-			  status = 1;
-			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
-			  HAL_GPIO_WritePin(GPIOA, EN3, 0);
-			  display7SEG(0);
-			  break;
 
-
+	  if (isTimerExpried(1) == 1) {
+		  setTimer1(50,1);
+		  update7SEG(index_led);
+		  ++index_led;
+		  if (index_led > 3) {
+			  index_led = 0;
 		  }
 	  }
     /* USER CODE END WHILE */
