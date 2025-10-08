@@ -157,6 +157,7 @@ void display7SEG(int num){
 const int MAX_LED = 4;
 int index_led = 0;
 int led_buffer[4] = {1, 2, 3, 4};
+int hour = 15, minute = 8, second = 50;
 void update7SEG(int index){
     switch (index){
         case 0:
@@ -182,6 +183,13 @@ void update7SEG(int index){
         default:
             break;
     }
+}
+
+void updateClockBuffer() {
+	led_buffer[0] = hour / 10;
+	led_buffer[1] = hour % 10;
+	led_buffer[2] = minute / 10;
+	led_buffer[3] = minute % 10;
 }
 /**
   * @brief  The application entry point.
@@ -228,6 +236,20 @@ int main(void)
 		  setTimer1(100, 0);
 		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
 		  HAL_GPIO_TogglePin(GPIOA, DOT);
+		  ++second;
+		  if (second >= 60) {
+		 	second = 0;
+		 	++minute;
+		 }
+
+		 		  if (minute >= 60) {
+		 			  minute = 0;
+		 			  ++hour;
+		 		  }
+		 		  	  if (hour >= 24) {
+		 			  hour = 0;
+		 		  }
+		 		  updateClockBuffer();
 	  }
 
 	  if (isTimerExpried(1) == 1) {
