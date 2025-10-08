@@ -2746,9 +2746,9 @@ LOAD c:/stm32cubeide_1.7.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externa
  .debug_str     0x000000000007fb93       0xa7 ./Core/Src/software_timer.o
                                        0x2dee (size before relaxing)
  .debug_str     0x000000000007fc3a      0x2ba ./Core/Src/stm32f1xx_hal_msp.o
-                                      0x7ffbe (size before relaxing)
+                                      0x7ffa6 (size before relaxing)
  .debug_str     0x000000000007fef4       0xcd ./Core/Src/stm32f1xx_it.o
-                                      0x7fd20 (size before relaxing)
+                                      0x7fd08 (size before relaxing)
  .debug_str     0x000000000007ffc1       0x52 ./Core/Src/system_stm32f1xx.o
                                       0x7f77a (size before relaxing)
  .debug_str     0x0000000000080013       0x36 ./Core/Startup/startup_stm32f103c6ux.o

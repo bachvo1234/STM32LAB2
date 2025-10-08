@@ -200,7 +200,7 @@ int main(void)
   {
 	  if(isTimerExpried(0) == 1){
 		  setTimer1(100, 0);
-		  HAL_GPIO_TogglePin(GPIOA, RED_RED_Pin);
+		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
 	  }
 	  if(isTimerExpried(1) == 1){
 		  setTimer1(50, 1);
@@ -319,10 +319,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_RED_Pin|GPIO_PIN_6, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : RED_RED_Pin PA6 */
-  GPIO_InitStruct.Pin = RED_RED_Pin|GPIO_PIN_6;
+  GPIO_InitStruct.Pin = RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

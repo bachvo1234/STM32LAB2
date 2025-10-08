@@ -559,7 +559,7 @@ int main(void)
  80004a4:	2100      	movs	r1, #0
  80004a6:	2064      	movs	r0, #100	; 0x64
  80004a8:	f000 f908 	bl	80006bc <setTimer1>
-		  HAL_GPIO_TogglePin(GPIOA, RED_RED_Pin);
+		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
  80004ac:	2120      	movs	r1, #32
  80004ae:	481d      	ldr	r0, [pc, #116]	; (8000524 <main+0xbc>)
  80004b0:	f000 fd1c 	bl	8000eec <HAL_GPIO_TogglePin>
@@ -861,15 +861,15 @@ static void MX_GPIO_Init(void)
  8000662:	687b      	ldr	r3, [r7, #4]
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_RED_Pin|GPIO_PIN_6, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g, GPIO_PIN_RESET);
  8000664:	2200      	movs	r2, #0
- 8000666:	2160      	movs	r1, #96	; 0x60
+ 8000666:	217f      	movs	r1, #127	; 0x7f
  8000668:	480b      	ldr	r0, [pc, #44]	; (8000698 <MX_GPIO_Init+0x60>)
  800066a:	f000 fc27 	bl	8000ebc <HAL_GPIO_WritePin>
 
   /*Configure GPIO pins : RED_RED_Pin PA6 */
-  GPIO_InitStruct.Pin = RED_RED_Pin|GPIO_PIN_6;
- 800066e:	2360      	movs	r3, #96	; 0x60
+  GPIO_InitStruct.Pin = RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g;
+ 800066e:	237f      	movs	r3, #127	; 0x7f
  8000670:	60bb      	str	r3, [r7, #8]
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
  8000672:	2301      	movs	r3, #1
@@ -1027,9 +1027,20 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  800077c:	20000070 	.word	0x20000070
 
 08000780 <HAL_MspInit>:
+/* USER CODE END 0 */
+/**
+  * Initializes the Global MSP.
+  */
+void HAL_MspInit(void)
+{
  8000780:	b480      	push	{r7}
  8000782:	b085      	sub	sp, #20
  8000784:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN MspInit 0 */
+
+  /* USER CODE END MspInit 0 */
+
+  __HAL_RCC_AFIO_CLK_ENABLE();
  8000786:	4b15      	ldr	r3, [pc, #84]	; (80007dc <HAL_MspInit+0x5c>)
  8000788:	699b      	ldr	r3, [r3, #24]
  800078a:	4a14      	ldr	r2, [pc, #80]	; (80007dc <HAL_MspInit+0x5c>)
@@ -1040,6 +1051,7 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8000796:	f003 0301 	and.w	r3, r3, #1
  800079a:	60bb      	str	r3, [r7, #8]
  800079c:	68bb      	ldr	r3, [r7, #8]
+  __HAL_RCC_PWR_CLK_ENABLE();
  800079e:	4b0f      	ldr	r3, [pc, #60]	; (80007dc <HAL_MspInit+0x5c>)
  80007a0:	69db      	ldr	r3, [r3, #28]
  80007a2:	4a0e      	ldr	r2, [pc, #56]	; (80007dc <HAL_MspInit+0x5c>)
@@ -1050,6 +1062,12 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  80007ae:	f003 5380 	and.w	r3, r3, #268435456	; 0x10000000
  80007b2:	607b      	str	r3, [r7, #4]
  80007b4:	687b      	ldr	r3, [r7, #4]
+
+  /* System interrupt init*/
+
+  /** DISABLE: JTAG-DP Disabled and SW-DP Disabled
+  */
+  __HAL_AFIO_REMAP_SWJ_DISABLE();
  80007b6:	4b0a      	ldr	r3, [pc, #40]	; (80007e0 <HAL_MspInit+0x60>)
  80007b8:	685b      	ldr	r3, [r3, #4]
  80007ba:	60fb      	str	r3, [r7, #12]
@@ -1062,6 +1080,11 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  80007cc:	4a04      	ldr	r2, [pc, #16]	; (80007e0 <HAL_MspInit+0x60>)
  80007ce:	68fb      	ldr	r3, [r7, #12]
  80007d0:	6053      	str	r3, [r2, #4]
+
+  /* USER CODE BEGIN MspInit 1 */
+
+  /* USER CODE END MspInit 1 */
+}
  80007d2:	bf00      	nop
  80007d4:	3714      	adds	r7, #20
  80007d6:	46bd      	mov	sp, r7
@@ -1071,14 +1094,27 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  80007e0:	40010000 	.word	0x40010000
 
 080007e4 <HAL_TIM_Base_MspInit>:
+* This function configures the hardware resources used in this example
+* @param htim_base: TIM_Base handle pointer
+* @retval None
+*/
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
+{
  80007e4:	b580      	push	{r7, lr}
  80007e6:	b084      	sub	sp, #16
  80007e8:	af00      	add	r7, sp, #0
  80007ea:	6078      	str	r0, [r7, #4]
+  if(htim_base->Instance==TIM2)
  80007ec:	687b      	ldr	r3, [r7, #4]
  80007ee:	681b      	ldr	r3, [r3, #0]
  80007f0:	f1b3 4f80 	cmp.w	r3, #1073741824	; 0x40000000
  80007f4:	d113      	bne.n	800081e <HAL_TIM_Base_MspInit+0x3a>
+  {
+  /* USER CODE BEGIN TIM2_MspInit 0 */
+
+  /* USER CODE END TIM2_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_TIM2_CLK_ENABLE();
  80007f6:	4b0c      	ldr	r3, [pc, #48]	; (8000828 <HAL_TIM_Base_MspInit+0x44>)
  80007f8:	69db      	ldr	r3, [r3, #28]
  80007fa:	4a0b      	ldr	r2, [pc, #44]	; (8000828 <HAL_TIM_Base_MspInit+0x44>)
@@ -1089,12 +1125,21 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8000806:	f003 0301 	and.w	r3, r3, #1
  800080a:	60fb      	str	r3, [r7, #12]
  800080c:	68fb      	ldr	r3, [r7, #12]
+    /* TIM2 interrupt Init */
+    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
  800080e:	2200      	movs	r2, #0
  8000810:	2100      	movs	r1, #0
  8000812:	201c      	movs	r0, #28
  8000814:	f000 f9a1 	bl	8000b5a <HAL_NVIC_SetPriority>
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
  8000818:	201c      	movs	r0, #28
  800081a:	f000 f9ba 	bl	8000b92 <HAL_NVIC_EnableIRQ>
+  /* USER CODE BEGIN TIM2_MspInit 1 */
+
+  /* USER CODE END TIM2_MspInit 1 */
+  }
+
+}
  800081e:	bf00      	nop
  8000820:	3710      	adds	r7, #16
  8000822:	46bd      	mov	sp, r7
@@ -1103,67 +1148,182 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  8000828:	40021000 	.word	0x40021000
 
 0800082c <NMI_Handler>:
+/******************************************************************************/
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
  800082c:	b480      	push	{r7}
  800082e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  while (1)
  8000830:	e7fe      	b.n	8000830 <NMI_Handler+0x4>
 
 08000832 <HardFault_Handler>:
+
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
  8000832:	b480      	push	{r7}
  8000834:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN HardFault_IRQn 0 */
+
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
  8000836:	e7fe      	b.n	8000836 <HardFault_Handler+0x4>
 
 08000838 <MemManage_Handler>:
+
+/**
+  * @brief This function handles Memory management fault.
+  */
+void MemManage_Handler(void)
+{
  8000838:	b480      	push	{r7}
  800083a:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+
+  /* USER CODE END MemoryManagement_IRQn 0 */
+  while (1)
  800083c:	e7fe      	b.n	800083c <MemManage_Handler+0x4>
 
 0800083e <BusFault_Handler>:
+
+/**
+  * @brief This function handles Prefetch fault, memory access fault.
+  */
+void BusFault_Handler(void)
+{
  800083e:	b480      	push	{r7}
  8000840:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN BusFault_IRQn 0 */
+
+  /* USER CODE END BusFault_IRQn 0 */
+  while (1)
  8000842:	e7fe      	b.n	8000842 <BusFault_Handler+0x4>
 
 08000844 <UsageFault_Handler>:
+
+/**
+  * @brief This function handles Undefined instruction or illegal state.
+  */
+void UsageFault_Handler(void)
+{
  8000844:	b480      	push	{r7}
  8000846:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN UsageFault_IRQn 0 */
+
+  /* USER CODE END UsageFault_IRQn 0 */
+  while (1)
  8000848:	e7fe      	b.n	8000848 <UsageFault_Handler+0x4>
 
 0800084a <SVC_Handler>:
+
+/**
+  * @brief This function handles System service call via SWI instruction.
+  */
+void SVC_Handler(void)
+{
  800084a:	b480      	push	{r7}
  800084c:	af00      	add	r7, sp, #0
+
+  /* USER CODE END SVCall_IRQn 0 */
+  /* USER CODE BEGIN SVCall_IRQn 1 */
+
+  /* USER CODE END SVCall_IRQn 1 */
+}
  800084e:	bf00      	nop
  8000850:	46bd      	mov	sp, r7
  8000852:	bc80      	pop	{r7}
  8000854:	4770      	bx	lr
 
 08000856 <DebugMon_Handler>:
+
+/**
+  * @brief This function handles Debug monitor.
+  */
+void DebugMon_Handler(void)
+{
  8000856:	b480      	push	{r7}
  8000858:	af00      	add	r7, sp, #0
+
+  /* USER CODE END DebugMonitor_IRQn 0 */
+  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+
+  /* USER CODE END DebugMonitor_IRQn 1 */
+}
  800085a:	bf00      	nop
  800085c:	46bd      	mov	sp, r7
  800085e:	bc80      	pop	{r7}
  8000860:	4770      	bx	lr
 
 08000862 <PendSV_Handler>:
+
+/**
+  * @brief This function handles Pendable request for system service.
+  */
+void PendSV_Handler(void)
+{
  8000862:	b480      	push	{r7}
  8000864:	af00      	add	r7, sp, #0
+
+  /* USER CODE END PendSV_IRQn 0 */
+  /* USER CODE BEGIN PendSV_IRQn 1 */
+
+  /* USER CODE END PendSV_IRQn 1 */
+}
  8000866:	bf00      	nop
  8000868:	46bd      	mov	sp, r7
  800086a:	bc80      	pop	{r7}
  800086c:	4770      	bx	lr
 
 0800086e <SysTick_Handler>:
+
+/**
+  * @brief This function handles System tick timer.
+  */
+void SysTick_Handler(void)
+{
  800086e:	b580      	push	{r7, lr}
  8000870:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
  8000872:	f000 f87f 	bl	8000974 <HAL_IncTick>
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
  8000876:	bf00      	nop
  8000878:	bd80      	pop	{r7, pc}
 	...
 
 0800087c <TIM2_IRQHandler>:
+
+/**
+  * @brief This function handles TIM2 global interrupt.
+  */
+void TIM2_IRQHandler(void)
+{
  800087c:	b580      	push	{r7, lr}
  800087e:	af00      	add	r7, sp, #0
+  /* USER CODE BEGIN TIM2_IRQn 0 */
+
+  /* USER CODE END TIM2_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim2);
  8000880:	4802      	ldr	r0, [pc, #8]	; (800088c <TIM2_IRQHandler+0x10>)
  8000882:	f000 ffc5 	bl	8001810 <HAL_TIM_IRQHandler>
+  /* USER CODE BEGIN TIM2_IRQn 1 */
+
+  /* USER CODE END TIM2_IRQn 1 */
+}
  8000886:	bf00      	nop
  8000888:	bd80      	pop	{r7, pc}
  800088a:	bf00      	nop
