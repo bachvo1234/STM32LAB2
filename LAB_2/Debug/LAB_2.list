@@ -643,9 +643,9 @@ int main(void)
  8000546:	2100      	movs	r1, #0
  8000548:	2064      	movs	r0, #100	; 0x64
  800054a:	f000 f925 	bl	8000798 <setTimer1>
-  setTimer1(50, 1);
+  setTimer1(25, 1);
  800054e:	2101      	movs	r1, #1
- 8000550:	2032      	movs	r0, #50	; 0x32
+ 8000550:	2019      	movs	r0, #25
  8000552:	f000 f921 	bl	8000798 <setTimer1>
   while (1)
   {
@@ -676,9 +676,9 @@ int main(void)
  8000580:	4603      	mov	r3, r0
  8000582:	2b01      	cmp	r3, #1
  8000584:	d1e7      	bne.n	8000556 <main+0x2a>
-		  setTimer1(50,1);
+		  setTimer1(25,1);
  8000586:	2101      	movs	r1, #1
- 8000588:	2032      	movs	r0, #50	; 0x32
+ 8000588:	2019      	movs	r0, #25
  800058a:	f000 f905 	bl	8000798 <setTimer1>
 		  update7SEG(index_led);
  800058e:	4b0b      	ldr	r3, [pc, #44]	; (80005bc <main+0x90>)

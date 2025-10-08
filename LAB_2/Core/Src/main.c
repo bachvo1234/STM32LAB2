@@ -220,7 +220,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer1(100, 0);
-  setTimer1(50, 1);
+  setTimer1(25, 1);
   while (1)
   {
 
@@ -231,7 +231,7 @@ int main(void)
 	  }
 
 	  if (isTimerExpried(1) == 1) {
-		  setTimer1(50,1);
+		  setTimer1(25,1);
 		  update7SEG(index_led);
 		  ++index_led;
 		  if (index_led > 3) {
