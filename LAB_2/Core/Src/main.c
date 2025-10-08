@@ -19,12 +19,10 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "software_timer.h"
-
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "software_timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +45,19 @@ TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
+static void MX_TIM2_Init(void);
+/* USER CODE BEGIN PFP */
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
 void display7SEG(int num){
 	switch(num){
 	case 0:
@@ -143,20 +154,6 @@ void display7SEG(int num){
 
 	}
 }
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_TIM2_Init(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
-
-
 /**
   * @brief  The application entry point.
   * @retval int
@@ -198,6 +195,7 @@ int main(void)
   int status = 1;
   while (1)
   {
+
 	  if(isTimerExpried(0) == 1){
 		  setTimer1(100, 0);
 		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
@@ -212,11 +210,12 @@ int main(void)
 			  display7SEG(1);
 			  break;
 		  case 2:
-		  	  ++status;
+		  	  --status;
 		  	  HAL_GPIO_WritePin(GPIOA, EN0, 1);
 		  	  HAL_GPIO_WritePin(GPIOA, EN1, 0);
 		  	  display7SEG(2);
 		  	  break;
+
 		  }
 	  }
     /* USER CODE END WHILE */
@@ -317,16 +316,31 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|EN0|EN1, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : RED_RED_Pin PA6 */
-  GPIO_InitStruct.Pin = RED_LED_Pin|GPIO_PIN_6|SEG_a|SEG_b|SEG_c|SEG_d|SEG_e|SEG_f|SEG_g;
+  /*Configure GPIO pin Output Level */
+   HAL_GPIO_WritePin(GPIOB, SEG_a|SEG_b|SEG_c|SEG_d
+                           |SEG_e|SEG_f|SEG_g, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : RED_LED_Pin EN0_Pin EN1_Pin */
+  GPIO_InitStruct.Pin = RED_LED_Pin|EN0|EN1;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : SEG0_Pin SEG1_Pin SEG2_Pin SEG3_Pin
+                           SEG4_Pin SEG5_Pin SEG6_Pin */
+  GPIO_InitStruct.Pin =  SEG_a|SEG_b|SEG_c|SEG_d
+          	  	  	  	  |SEG_e|SEG_f|SEG_g;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 
 }
 
