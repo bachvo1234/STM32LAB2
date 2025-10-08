@@ -199,6 +199,7 @@ int main(void)
 	  if(isTimerExpried(0) == 1){
 		  setTimer1(100, 0);
 		  HAL_GPIO_TogglePin(GPIOA, RED_LED_Pin);
+		  HAL_GPIO_TogglePin(GPIOA, DOT);
 	  }
 	  if(isTimerExpried(1) == 1){
 		  setTimer1(50, 1);
@@ -207,14 +208,35 @@ int main(void)
 			  ++status;
 			  HAL_GPIO_WritePin(GPIOA, EN0, 0);
 			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
 			  display7SEG(1);
 			  break;
 		  case 2:
-		  	  --status;
-		  	  HAL_GPIO_WritePin(GPIOA, EN0, 1);
-		  	  HAL_GPIO_WritePin(GPIOA, EN1, 0);
-		  	  display7SEG(2);
-		  	  break;
+			  ++status;
+			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN1, 0);
+			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
+			  display7SEG(2);
+			  break;
+		  case 3:
+			  ++status;
+			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN2, 0);
+			  HAL_GPIO_WritePin(GPIOA, EN3, 1);
+			  display7SEG(3);
+			  break;
+		  case 4:
+			  status = 1;
+			  HAL_GPIO_WritePin(GPIOA, EN0, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN1, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN2, 1);
+			  HAL_GPIO_WritePin(GPIOA, EN3, 0);
+			  display7SEG(0);
+			  break;
+
 
 		  }
 	  }
@@ -319,14 +341,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|EN0|EN1, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RED_LED_Pin|EN0|EN1|EN2|EN3|DOT, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
    HAL_GPIO_WritePin(GPIOB, SEG_a|SEG_b|SEG_c|SEG_d
                            |SEG_e|SEG_f|SEG_g, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : RED_LED_Pin EN0_Pin EN1_Pin */
-  GPIO_InitStruct.Pin = RED_LED_Pin|EN0|EN1;
+  GPIO_InitStruct.Pin = RED_LED_Pin|EN0|EN1|EN2|EN3|DOT;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
