@@ -191,6 +191,67 @@ void updateClockBuffer() {
 	led_buffer[2] = minute / 10;
 	led_buffer[3] = minute % 10;
 }
+const int MAX_LED_MATRIX = 8;
+int index_led_matrix = 0;
+uint8_t matrix_buffer[8] = {0xE7, 0xC3, 0x99, 0x99, 0x81, 0x81, 0x99, 0x99};
+
+void displayLEDMatrix(uint8_t index){
+    HAL_GPIO_WritePin(ENM0_GPIO_Port, ENM0_Pin, (index >> 0) & 1);
+    HAL_GPIO_WritePin(ENM1_GPIO_Port, ENM1_Pin, (index >> 1) & 1);
+    HAL_GPIO_WritePin(ENM2_GPIO_Port, ENM2_Pin, (index >> 2) & 1);
+    HAL_GPIO_WritePin(ENM3_GPIO_Port, ENM3_Pin, (index >> 3) & 1);
+    HAL_GPIO_WritePin(ENM4_GPIO_Port, ENM4_Pin, (index >> 4) & 1);
+    HAL_GPIO_WritePin(ENM5_GPIO_Port, ENM5_Pin, (index >> 5) & 1);
+    HAL_GPIO_WritePin(ENM6_GPIO_Port, ENM6_Pin, (index >> 6) & 1);
+    HAL_GPIO_WritePin(ENM7_GPIO_Port, ENM7_Pin, (index >> 7) & 1);
+}
+
+void updateLEDMatrix(int index){
+    switch (index){
+    case 0:
+        HAL_GPIO_WritePin(GPIOB, ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin | ROW5_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 1:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin | ROW5_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW1_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 2:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW3_Pin | ROW4_Pin | ROW5_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW2_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 3:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW2_Pin | ROW4_Pin | ROW5_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW3_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 4:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW5_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW4_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 5:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin | ROW6_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW5_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 6:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin | ROW5_Pin | ROW7_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW6_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    case 7:
+        HAL_GPIO_WritePin(GPIOB, ROW0_Pin | ROW1_Pin | ROW2_Pin | ROW3_Pin | ROW4_Pin | ROW5_Pin | ROW6_Pin, 1);
+        HAL_GPIO_WritePin(GPIOB, ROW7_Pin, 0);
+        displayLEDMatrix(matrix_buffer[index]);
+        break;
+    default:
+        break;
+    }
+}
 /**
   * @brief  The application entry point.
   * @retval int
