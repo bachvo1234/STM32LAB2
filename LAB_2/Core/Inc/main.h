@@ -79,7 +79,7 @@ void Error_Handler(void);
 #define ENM4 GPIO_PIN_12
 #define ENM5 GPIO_PIN_13
 #define ENM6 GPIO_PIN_14
-#define ENM7 GPIO_PIN_14
+#define ENM7 GPIO_PIN_15
 
 #define SEG_a GPIO_PIN_0
 #define SEG_b GPIO_PIN_1
