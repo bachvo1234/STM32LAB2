@@ -332,7 +332,7 @@ int main(void)
 		  }
 	  }
       if (isTimerExpried(2) == 1) {
-    	  setTimer1(10, 2);
+    	  setTimer1(1, 2);
     	  updateLEDMatrix(index_led_matrix);
     	  ++index_led_matrix;
     	  if (index_led_matrix >= MAX_LED_MATRIX) {
@@ -341,7 +341,7 @@ int main(void)
       }
 
 	  if (isTimerExpried(3) == 1) {
-		  setTimer1(300,3);
+		  setTimer1(200,3);
     	  updateMatricBuffer();
 	  }
 
